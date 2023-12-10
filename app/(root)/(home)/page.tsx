@@ -11,7 +11,7 @@ export default async function Home() {
       <div className="flex flex-col gap-8 items-start mb-8">
         <GiveawayContainer
           title="Active Giveaways"
-          // giveaways={JSON.parse(JSON.stringify(data))}
+          giveaways={JSON.parse(JSON.stringify(data))}
         />
       </div>
     </main>

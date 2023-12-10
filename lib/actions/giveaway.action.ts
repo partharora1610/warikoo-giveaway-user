@@ -2,17 +2,30 @@
 
 import Giveaway from "@/database/Giveaway.model";
 import { connectToDatabase } from "../mongoose";
-import Book from "@/database/Book.model";
 
 export const getGiveaway = async () => {};
 
 export const getAllGiveaways = async () => {
   try {
+    connectToDatabase();
     const giveaways = await Giveaway.find({}).populate("books");
-    // .populate("participants")
-    // .populate("winners");
 
     return { data: giveaways };
+  } catch (error) {
+    console.log(error);
+    return { data: error };
+  }
+};
+
+export const participateInGiveaway = async ({ giveawayId, userId }: any) => {
+  try {
+    connectToDatabase();
+    const giveaway = await Giveaway.findById(giveawayId);
+    giveaway.participants.push(userId);
+
+    await giveaway.save();
+
+    return { data: giveaway };
   } catch (error) {
     console.log(error);
     return { data: error };
