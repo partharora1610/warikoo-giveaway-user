@@ -43,6 +43,12 @@ export const participateInGiveaway = async (params: any) => {
 
     const { giveawayId, userId } = params;
 
+    // This is the clerk Id that we get
+
+    // get the mongo_user here..
+
+    // first here we need to create a participant model and then add _id to the giveaway model and also to the user model [] participants
+
     const giveaway = await Giveaway.findByIdAndUpdate(giveawayId, {
       $push: { participants: userId },
     });

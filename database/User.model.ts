@@ -3,6 +3,7 @@ import mongoose, { Schema, models } from "mongoose";
 interface IUser extends mongoose.Document {
   email: string;
   name: string;
+  username: string;
   createdAt: Date;
   updatedAt: Date;
   address: {
@@ -18,6 +19,7 @@ interface IUser extends mongoose.Document {
 const UserSchema = new Schema({
   email: { type: String, required: true },
   name: { type: String },
+  username: { type: String },
   createdAt: { type: Date, default: Date.now },
   address: {
     street: { type: String },

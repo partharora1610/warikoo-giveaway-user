@@ -40,10 +40,7 @@ const Giveawaycard = (params: any) => {
           <p>ends in 42 hours</p>
         </CardDescription>
       </CardHeader>
-      {/* <CardContent>
-          here we can show that how many books are there in the giveaway
-        <p>Card Content</p>
-      </CardContent> */}
+
       <CardFooter>
         <div className="flex items-center justify-end">
           <Link href={`giveaway/${id}`}>
