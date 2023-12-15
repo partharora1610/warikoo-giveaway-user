@@ -16,7 +16,9 @@ interface IGiveaway extends mongoose.Document {
 const GiveawaySchema = new Schema({
   title: { type: String, required: true },
   books: [{ type: Schema.Types.ObjectId, ref: "Book" }],
-  participants: [{ type: Schema.Types.ObjectId, ref: "User", default: [] }],
+  participants: [
+    { type: Schema.Types.ObjectId, ref: "Participate", default: [] },
+  ],
   winners: [{ type: Schema.Types.ObjectId, ref: "User", default: [] }],
   maxWinners: { type: Number, required: true },
   archived: { type: Boolean, default: false },

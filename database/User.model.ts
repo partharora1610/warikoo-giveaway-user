@@ -5,6 +5,12 @@ interface IUser extends mongoose.Document {
   name: string;
   createdAt: Date;
   updatedAt: Date;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+  };
   giveaways: Schema.Types.ObjectId[];
   wonGiveaways: Schema.Types.ObjectId[];
 }
@@ -13,6 +19,12 @@ const UserSchema = new Schema({
   email: { type: String, required: true },
   name: { type: String },
   createdAt: { type: Date, default: Date.now },
+  address: {
+    street: { type: String },
+    city: { type: String },
+    state: { type: String },
+    zip: { type: String },
+  },
   updatedAt: { type: Date, default: Date.now },
   giveaways: [{ type: Schema.Types.ObjectId, ref: "Giveaway" }],
   wonGiveaways: [{ type: Schema.Types.ObjectId, ref: "Giveaway" }],

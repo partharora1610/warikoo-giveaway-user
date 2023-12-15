@@ -1,7 +1,10 @@
 import GiveawayContainer from "@/components/shared/GiveawayContainer";
 import { getAllGiveaways } from "@/lib/actions/giveaway.action";
+import { auth } from "@clerk/nextjs";
 
 export default async function Home() {
+  const { userId } = auth();
+  console.log({ userId });
   const results = await getAllGiveaways();
   const { data } = results;
   console.log({ data });

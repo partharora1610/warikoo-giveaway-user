@@ -11,17 +11,18 @@ import {
 import Image from "next/image";
 
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 const Giveawaycard = (params: any) => {
   const {
     title,
     books,
     maxWinners,
+    id,
     // participants,
     // winners,
     // endDate,
     // startDate,
-    // id,
   } = params;
 
   const totalBooks = books.length;
@@ -45,7 +46,9 @@ const Giveawaycard = (params: any) => {
       </CardContent> */}
       <CardFooter>
         <div className="flex items-center justify-end">
-          <Button className="bg-blue-400 text-white">Participate</Button>
+          <Link href={`giveaway/${id}`}>
+            <Button className="bg-blue-400 text-white">Participate</Button>
+          </Link>
         </div>
       </CardFooter>
     </Card>
