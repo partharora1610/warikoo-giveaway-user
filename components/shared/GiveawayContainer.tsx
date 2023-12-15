@@ -7,7 +7,7 @@ type GiveawayContainerProps = {
 };
 
 const GiveawayContainer = ({ title, giveaways }: GiveawayContainerProps) => {
-  console.log({ giveaways });
+  // console.log({ giveaways });
 
   return (
     <div className="mb-8">

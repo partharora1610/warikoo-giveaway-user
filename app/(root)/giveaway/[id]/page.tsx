@@ -17,7 +17,7 @@ import React from "react";
 const Page = async ({ params }: { params: { id: string } }) => {
   const results = await getGiveaway({ id: params.id });
   const { data } = results;
-  console.log({ data });
+  // console.log({ data });
 
   const isParticipant = false;
 

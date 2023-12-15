@@ -4,10 +4,10 @@ import { auth } from "@clerk/nextjs";
 
 export default async function Home() {
   const { userId } = auth();
-  console.log({ userId });
+  // console.log({ userId });
   const results = await getAllGiveaways();
   const { data } = results;
-  console.log({ data });
+  // console.log({ data });
 
   return (
     <main className="">

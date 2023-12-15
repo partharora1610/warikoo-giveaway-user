@@ -22,7 +22,7 @@ export const getGiveaway = async (params: any) => {
     connectToDatabase();
 
     const { id } = params;
-    console.log({ id });
+    // console.log({ id });
 
     const giveaway = await Giveaway.findById(id).populate({
       path: "books",
@@ -39,7 +39,7 @@ export const getGiveaway = async (params: any) => {
 export const participateInGiveaway = async (params: any) => {
   try {
     connectToDatabase();
-    console.log(params);
+    // console.log(params);
 
     const { giveawayId, userId } = params;
 

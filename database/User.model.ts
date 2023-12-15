@@ -1,22 +1,27 @@
 import mongoose, { Schema, models } from "mongoose";
 
 interface IUser extends mongoose.Document {
+  clerkId: string;
   email: string;
   name: string;
   username: string;
+  giveaways: Schema.Types.ObjectId[];
+
   createdAt: Date;
   updatedAt: Date;
+
   address: {
     street: string;
     city: string;
     state: string;
     zip: string;
   };
-  giveaways: Schema.Types.ObjectId[];
-  wonGiveaways: Schema.Types.ObjectId[];
+
+  // wonGiveaways: Schema.Types.ObjectId[];
 }
 
 const UserSchema = new Schema({
+  clerkId: { type: String, required: true },
   email: { type: String, required: true },
   name: { type: String },
   username: { type: String },
@@ -29,7 +34,7 @@ const UserSchema = new Schema({
   },
   updatedAt: { type: Date, default: Date.now },
   giveaways: [{ type: Schema.Types.ObjectId, ref: "Giveaway" }],
-  wonGiveaways: [{ type: Schema.Types.ObjectId, ref: "Giveaway" }],
+  // wonGiveaways: [{ type: Schema.Types.ObjectId, ref: "Giveaway" }],
 });
 
 const User = models.User || mongoose.model("User", UserSchema);

@@ -2,7 +2,7 @@
 
 import User from "@/database/User.model";
 import { connectToDatabase } from "../mongoose";
-import { revalidatePath } from "next/cache";
+// import { revalidatePath } from "next/cache";
 
 export const createUsers = async (params: any) => {
   try {
@@ -30,7 +30,6 @@ export const updateUser = async (params: any) => {
     });
 
     // revalidatePath("/profile/[id]", updatedUser._id);
-
     return { data: updatedUser };
   } catch (error) {
     console.log(error);

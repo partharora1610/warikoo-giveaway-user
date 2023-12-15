@@ -1,16 +1,10 @@
 import { authMiddleware } from "@clerk/nextjs";
 
 export default authMiddleware({
-  // will protect routes later
-  publicRoutes: [
-    "/",
-    "/((?!.+\\.[\\w]+$|_next).*)",
-    "/",
-    "/(api|trpc)(.*)",
-    "/api/webhooks(.*)",
-  ],
+  publicRoutes: ["/", "/api/webhook"],
+  ignoredRoutes: ["api/webhook"],
 });
 
 export const config = {
-  // matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
