@@ -22,7 +22,7 @@ interface IUser extends mongoose.Document {
 
 const UserSchema = new Schema({
   clerkId: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String },
   name: { type: String },
   username: { type: String },
   createdAt: { type: Date, default: Date.now },

@@ -13,13 +13,19 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { getGiveaway } from "@/lib/actions/giveaway.action";
 import React from "react";
+import { auth } from "@clerk/nextjs";
+import { getUserByClerkId } from "@/lib/actions/user.action";
 
 const Page = async ({ params }: { params: { id: string } }) => {
+  const { userId } = auth();
+
+  const user = await getUserByClerkId({ userId });
+
   const results = await getGiveaway({ id: params.id });
   const { data } = results;
-  // console.log({ data });
 
-  const isParticipant = false;
+  const isParticipant = user.data?.giveaways.includes(params.id);
+  console.log({ isParticipant });
 
   return (
     <div className="">
@@ -29,7 +35,11 @@ const Page = async ({ params }: { params: { id: string } }) => {
           <WaitCard />
         </div>
       ) : (
-        <AddressForm books={JSON.parse(JSON.stringify(data.books))} />
+        <AddressForm
+          books={JSON.parse(JSON.stringify(data.books))}
+          userId={userId}
+          giveawayId={params.id}
+        />
       )}
     </div>
   );

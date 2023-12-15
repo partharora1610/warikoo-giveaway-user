@@ -3,6 +3,9 @@
 import Giveaway from "@/database/Giveaway.model";
 import { connectToDatabase } from "../mongoose";
 import Book from "@/database/Book.model";
+import User from "@/database/User.model";
+import Participate from "@/database/Participant.model";
+import { revalidatePath } from "next/cache";
 
 export const getAllGiveaways = async () => {
   try {
@@ -22,7 +25,6 @@ export const getGiveaway = async (params: any) => {
     connectToDatabase();
 
     const { id } = params;
-    // console.log({ id });
 
     const giveaway = await Giveaway.findById(id).populate({
       path: "books",
@@ -39,21 +41,47 @@ export const getGiveaway = async (params: any) => {
 export const participateInGiveaway = async (params: any) => {
   try {
     connectToDatabase();
-    // console.log(params);
+    // console.log({ params });
 
-    const { giveawayId, userId } = params;
+    const { giveawayId, userId, bookId } = params;
 
-    // This is the clerk Id that we get
+    const user = await User.findOne({ clerkId: userId });
+    const giveaway = await Giveaway.findById(giveawayId);
 
-    // get the mongo_user here..
+    // console.log({ user, giveaway });
 
-    // first here we need to create a participant model and then add _id to the giveaway model and also to the user model [] participants
+    if (!user) {
+      return { data: "User not found" };
+    }
 
-    const giveaway = await Giveaway.findByIdAndUpdate(giveawayId, {
-      $push: { participants: userId },
+    const alreadyParticipated = await Participate.findOne({
+      giveaway: giveaway._id,
+      user: user._id,
     });
 
-    return { data: giveaway };
+    const updatedUser = await User.findByIdAndUpdate(user._id, {
+      $push: { giveaways: giveaway._id },
+    });
+
+    if (!(alreadyParticipated == null)) {
+      return { data: "Only one entry per user is allowed in the giveaway" };
+    }
+
+    const participate = await Participate.create({
+      giveaway: giveaway._id,
+      user: user._id,
+      book: bookId,
+    });
+    // console.log({ participate });
+
+    const updatedGiveaway = await Giveaway.findByIdAndUpdate(giveaway._id, {
+      $push: { participants: participate._id },
+    });
+    // console.log({ updatedGiveaway });
+
+    // revalidatePath to update the cache
+    // revalidatePath("")
+    return { data: updatedGiveaway };
   } catch (error) {
     console.log(error);
     return { data: error };

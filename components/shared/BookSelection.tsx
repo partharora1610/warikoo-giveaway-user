@@ -24,8 +24,8 @@ const BookSelection = (params: any) => {
                 className={`max-w-sm mx-auto w-full bg-white rounded overflow-hidden flex items-center p-1`}
               >
                 <RadioGroupItem
-                  value={book.value}
-                  id={book.value}
+                  value={book.name}
+                  id={book.name}
                   onClick={() => {
                     setSelectedBookId(book._id);
                   }}

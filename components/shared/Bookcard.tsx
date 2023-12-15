@@ -1,20 +1,50 @@
-import Image from "next/image";
-import React from "react";
+"use client";
 
-const BookCard = ({ title, author }: { title: string; author: string }) => {
+import { getBookCover, getBookData } from "@/lib/getBookData";
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+const BookCard = (params: any) => {
+  const [image, setImage] = useState("");
+
+  const { title, author } = params;
+
+  useEffect(() => {
+    getBookData(title).then((response) => {
+      getBookCover(response.isbn).then((res) => {
+        const blob = new Blob([res.data], { type: "image/jpg" });
+        const imageUrl = URL.createObjectURL(blob);
+        setImage(imageUrl);
+      });
+    });
+  }, []);
+
   return (
-    <div className="flex gap-2 w-full p-2 bg-white">
-      <Image
-        src="https://m.media-amazon.com/images/I/61lJx8V4yEL._AC_UF1000,1000_QL80_.jpg"
-        width={75}
-        alt="Picture of the author"
-        height={75}
-      />
-      <div className="flex flex-col gap-1">
-        <h4 className="text-sm base-bold">{title}</h4>
-        <p className="small-regular text-light-500">{author}</p>
-      </div>
-    </div>
+    <Card className="border-none">
+      <CardHeader>
+        <div className="flex gap-4">
+          {image != "" ? (
+            <Image src={image} alt="" width={75} height={50} />
+          ) : (
+            <p className="small-regular text-gray-300">Loading...</p>
+          )}
+
+          <CardTitle>
+            <p className="base-medium">{title}</p>
+            <p className="small-medium text-gray-500">{author}</p>
+          </CardTitle>
+        </div>
+      </CardHeader>
+    </Card>
   );
 };
 

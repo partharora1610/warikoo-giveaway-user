@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -15,47 +16,48 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+
 import BookSelection from "./BookSelection";
-import { useState } from "react";
+
 import { participateInGiveaway } from "@/lib/actions/giveaway.action";
 
 const formSchema = z.object({
-  fullname: z.string().min(2, {
-    message: "Fullname must be at least 2 characters.",
-  }),
-  contactNumber: z.string().min(10, {
-    message: "Contact number must be at least 10 characters.",
-  }),
-  pincode: z.string().min(6, {
-    message: "Pincode must be at least 6 characters.",
-  }),
-  houseNo: z.string().min(2, {
-    message: "House number must be at least 2 characters.",
-  }),
-  area: z.string().min(2, {
-    message: "Area must be at least 2 characters.",
-  }),
-  landmark: z.string().min(2, {
-    message: "Landmark must be at least 2 characters.",
-  }),
-  city: z.string().min(2, {
-    message: "City must be at least 2 characters.",
-  }),
-  state: z.string().min(2, {
-    message: "State must be at least 2 characters.",
-  }),
-  country: z.string().min(2, {
-    message: "Country must be at least 2 characters.",
-  }),
-  // fullname: z.string(),
-  // contactNumber: z.string(),
-  // pincode: z.string(),
-  // houseNo: z.string(),
-  // area: z.string(),
-  // landmark: z.string(),
-  // city: z.string(),
-  // state: z.string(),
-  // country: z.string(),
+  // fullname: z.string().min(2, {
+  //   message: "Fullname must be at least 2 characters.",
+  // }),
+  // contactNumber: z.string().min(10, {
+  //   message: "Contact number must be at least 10 characters.",
+  // }),
+  // pincode: z.string().min(6, {
+  //   message: "Pincode must be at least 6 characters.",
+  // }),
+  // houseNo: z.string().min(2, {
+  //   message: "House number must be at least 2 characters.",
+  // }),
+  // area: z.string().min(2, {
+  //   message: "Area must be at least 2 characters.",
+  // }),
+  // landmark: z.string().min(2, {
+  //   message: "Landmark must be at least 2 characters.",
+  // }),
+  // city: z.string().min(2, {
+  //   message: "City must be at least 2 characters.",
+  // }),
+  // state: z.string().min(2, {
+  //   message: "State must be at least 2 characters.",
+  // }),
+  // country: z.string().min(2, {
+  //   message: "Country must be at least 2 characters.",
+  // }),
+  fullname: z.string(),
+  contactNumber: z.string(),
+  pincode: z.string(),
+  houseNo: z.string(),
+  area: z.string(),
+  landmark: z.string(),
+  city: z.string(),
+  state: z.string(),
+  country: z.string(),
 });
 
 function AddressForm(params: any) {
@@ -79,13 +81,21 @@ function AddressForm(params: any) {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log({ ...values, bookId: selectedBookId });
 
+    // Save the address in the user's profile, save this in the user's profile
+    // await saveAddress({ ...values, });
+
+    // Participate in giveaway
     await participateInGiveaway({
       bookId: selectedBookId,
-      userId: "60f9b0b9e6b3a40015f1b0a0",
+      userId: params.userId,
+      giveawayId: params.giveawayId,
     });
 
+    // Reset the form and clearing the book selection
     form.reset();
     setSelectedBookId("");
+
+    // Also we redirect the user to the giveaway page and revaldiatePath for better UX
   };
 
   return (
