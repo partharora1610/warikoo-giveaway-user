@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import BookSelection from "./BookSelection";
 
 import { participateInGiveaway } from "@/lib/actions/giveaway.action";
+import { revalidatePath } from "next/cache";
 
 const formSchema = z.object({
   // fullname: z.string().min(2, {
@@ -81,21 +82,26 @@ function AddressForm(params: any) {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log({ ...values, bookId: selectedBookId });
 
-    // Save the address in the user's profile, save this in the user's profile
-    // await saveAddress({ ...values, });
-
-    // Participate in giveaway
     await participateInGiveaway({
       bookId: selectedBookId,
       userId: params.userId,
       giveawayId: params.giveawayId,
+      userAddress: {
+        country: values.country,
+        contactNumber: values.contactNumber,
+        pincode: values.pincode,
+        houseNo: values.houseNo,
+        area: values.area,
+        landmark: values.landmark,
+        city: values.city,
+        state: values.state,
+      },
     });
 
-    // Reset the form and clearing the book selection
     form.reset();
-    setSelectedBookId("");
 
-    // Also we redirect the user to the giveaway page and revaldiatePath for better UX
+    setSelectedBookId("");
+    revalidatePath(`/giveaway/${params.giveawayId}`);
   };
 
   return (

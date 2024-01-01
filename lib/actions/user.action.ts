@@ -2,7 +2,6 @@
 
 import User from "@/database/User.model";
 import { connectToDatabase } from "../mongoose";
-// import { revalidatePath } from "next/cache";
 
 export const getUserByClerkId = async (params: any) => {
   try {

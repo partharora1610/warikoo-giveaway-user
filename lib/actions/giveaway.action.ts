@@ -41,14 +41,13 @@ export const getGiveaway = async (params: any) => {
 export const participateInGiveaway = async (params: any) => {
   try {
     connectToDatabase();
-    // console.log({ params });
 
-    const { giveawayId, userId, bookId } = params;
+    console.log({ params });
+
+    const { giveawayId, userId, bookId, userAddress } = params;
 
     const user = await User.findOne({ clerkId: userId });
     const giveaway = await Giveaway.findById(giveawayId);
-
-    // console.log({ user, giveaway });
 
     if (!user) {
       return { data: "User not found" };
@@ -59,28 +58,28 @@ export const participateInGiveaway = async (params: any) => {
       user: user._id,
     });
 
-    const updatedUser = await User.findByIdAndUpdate(user._id, {
-      $push: { giveaways: giveaway._id },
-    });
-
     if (!(alreadyParticipated == null)) {
       return { data: "Only one entry per user is allowed in the giveaway" };
     }
+
+    const updatedUser = await User.findByIdAndUpdate(user._id, {
+      $push: { giveaways: giveaway._id },
+      address: userAddress,
+    });
+
+    console.log({ updatedUser });
 
     const participate = await Participate.create({
       giveaway: giveaway._id,
       user: user._id,
       book: bookId,
     });
-    // console.log({ participate });
+    console.log({ participate });
 
     const updatedGiveaway = await Giveaway.findByIdAndUpdate(giveaway._id, {
       $push: { participants: participate._id },
     });
-    // console.log({ updatedGiveaway });
 
-    // revalidatePath to update the cache
-    // revalidatePath("")
     return { data: updatedGiveaway };
   } catch (error) {
     console.log(error);
